@@ -1,26 +1,13 @@
 #include <Servo.h>
 
-void moveServo(int angle, int timeMs) {
-  int currentPos = myServo.read();
-  int targetPos = currentPos + angle;
+Servo myservo;
 
-  if (targetPos > 180) targetPos = 180;
-  if (targetPos < 0) targetPos = 0;
+void setupServo() {
+  myservo.attach(7);  // Attach servo to pin 7
+}
 
-  int stepCount = abs(targetPos - currentPos);
-  if (stepCount == 0) return;
-
-  float stepDelay = (float)timeMs / stepCount;
-
-  if (angle > 0) {
-    for (int pos = currentPos; pos <= targetPos; pos++) {
-      myServo.write(pos);
-      delay(stepDelay);
-    }
-  } else {
-    for (int pos = currentPos; pos >= targetPos; pos--) {
-      myServo.write(pos);
-      delay(stepDelay);
-    }
-  }
+// Function to move servo to specific angle
+void moveServo(int angle) {
+  angle = constrain(angle, 0, 180);  // Limit to servo range
+  myservo.write(angle);
 }
