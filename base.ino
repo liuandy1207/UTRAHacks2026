@@ -47,8 +47,7 @@ void setup() {
 }
 
 void loop() {
-  identifyColor();
-  delay(500);
+
 }
 
 // Servo Functions
