@@ -281,7 +281,7 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
   int almost90 = 2000; // TODO: fix
   int step = int(almost90/10);
   int colour = identifyColor();
-  while(colour != 3 && colour != bg){ //3= brown
+  while(colour != 3 || colour != bg){ //3= brown
     Serial.println("checked");
     if (colour == tColour){
       Serial.println("straight");
@@ -335,7 +335,7 @@ void moveAndCheckColor2(int tColour, char dir, int bg) {
   int almost90 = 2000; // TODO: fix
   int step = int(almost90/10);
   int colour = identifyColor2();
-  while(colour != 3 && colour != bg){ //3= brown
+  while(colour != 3 || colour != bg){ //3= brown
     Serial.println("checked");
     if (colour == tColour){
       Serial.println("straight");
