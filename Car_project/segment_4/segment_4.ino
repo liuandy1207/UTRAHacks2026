@@ -297,10 +297,96 @@ void obstacle_avoidance_sequence() {
 }
 
 //new function end
+// void moveAndCheckColor(int tColour, char dir, int bg) {
+//   bool begin = true;
+//   int almost90 = 2000; 
+//   int step = int(almost90/10);
+//   int colour = identifyColor();
+//   while(colour != 3 || colour != bg){ //3= brown
+//     Serial.println("checked");
+//     if (colour == tColour){
+//       Serial.println("straight");
+//       begin = true;
+//       forward();
+//       delay(500);
+//     }
+//     else if (begin){
+//       Serial.println("command");
+
+//       if(dir == 'l'){
+//         turnLeft();//amount to get to just under 180deg left
+//       }
+//       else{
+//         turnRight();//amount to get to just under 180deg left
+//       }
+//       delay(almost90); //dir
+//       begin = false;
+//     }
+//     else{
+//       if(dir == 'l'){
+//         turnRight(); //dir
+//       }
+//       else{
+//         turnLeft();
+//       }
+//       delay(step);
+//     }
+//     int dist = checkDistance();
+//     if (dist < 20){
+//       return;
+//     }
+//     colour = identifyColor();
+//   }
+// }
+
+
+// void moveAndCheckColor2(int tColour, char dir, int bg) {
+//   bool begin = true;
+//   int almost90 = 2000; 
+//   int step = int(almost90/10);
+//   int colour = identifyColor2();
+//   while(colour != 3 || colour != bg){ //3= brown
+//     Serial.println("checked");
+//     if (colour == tColour){
+//       Serial.println("straight");
+//       begin = true;
+//       forward();
+//       delay(500);
+//     }
+//     else if (begin){
+//       Serial.println("command");
+
+//       if(dir == 'l'){
+//         turnLeft();//amount to get to just under 180deg left
+//       }
+//       else{
+//         turnRight();//amount to get to just under 180deg left
+//       }
+//       delay(almost90); //dir
+//       begin = false;
+//     }
+//     else{
+//       if(dir == 'l'){
+//         turnRight(); //dir
+//       }
+//       else{
+//         turnLeft();
+//       }
+//       delay(step);
+//     }
+//     int dist = checkDistance();
+//     if (dist < 20){
+//       return;
+//     }
+//     colour = identifyColor2();
+//   }
+// }
+
+//new function end
 void moveAndCheckColor(int tColour, char dir, int bg) {
   bool begin = true;
-  int almost90 = 2000; // TODO: fix
-  int step = int(almost90/10);
+  int almost90 = 2000; 
+  int step = int(almost90/6);
   int colour = identifyColor();
   while(colour != 3 || colour != bg){ //3= brown
     Serial.println("checked");
@@ -339,11 +425,10 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
   }
 }
 
-
 void moveAndCheckColor2(int tColour, char dir, int bg) {
   bool begin = true;
   int almost90 = 2000; 
-  int step = int(almost90/10);
+  int step = int(almost90/6);
   int colour = identifyColor2();
   while(colour != 3 || colour != bg){ //3= brown
     Serial.println("checked");
@@ -381,6 +466,7 @@ void moveAndCheckColor2(int tColour, char dir, int bg) {
     colour = identifyColor2();
   }
 }
+
 
 void loop() {
   moveforward();
