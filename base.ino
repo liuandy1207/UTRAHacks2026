@@ -44,28 +44,28 @@ void setup() {
   pinMode(OUT, INPUT);
   digitalWrite(S0, HIGH); // set frequency scaling
   digitalWrite(S1, LOW);  
+
+  servo.write(0);
 }
 
 void loop() {
-
+  identifyColor();
+  delay(250);
 }
 
 // Servo Functions
 void rotate(int deg) {
   servo.write(deg);
   // 0 puts the claw low, back leg high
-  // 90 putss the claw high, back leg low
+  // 90 puts the claw high, back leg low
 }
 
 // Color Sensor Functions
 
 // Calibration Values
-int redMin = 20; 
-int redMax = 60; 
-int greenMin = 20; 
-int greenMax = 60; 
-int blueMin = 20; 
-int blueMax = 60; 
+int redMin = 11,  redMax = 28;
+int greenMin = 11, greenMax = 32;
+int blueMin = 11, blueMax = 30;
 
 int identifyColor() {
   int r = getAverage(LOW, LOW);
@@ -83,14 +83,19 @@ int identifyColor() {
   Serial.print(" - Color: ");
   if (r < 50 && g < 50 && b < 50) {
     Serial.println("BLACK");
+    return 4;
   } else if (r > 200 && g > 200 && b > 200) {
     Serial.println("WHITE");
+    return 0;
   } else if (r > g && r > b) {
-    Serial.println("RED");
+    Serial.println("RED/BROWN");
+    return 1;
   } else if (g > r && g > b) {
     Serial.println("GREEN");
+    return 2;
   } else if (b > r && b > g) {
     Serial.println("BLUE");
+    return 3;
   } else {
     Serial.println("UNCERTAIN");
   }
