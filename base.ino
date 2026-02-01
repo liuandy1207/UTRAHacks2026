@@ -44,8 +44,10 @@ void setup() {
   digitalWrite(S1, LOW);  
 
   // Echo Sensor Setup
-  pinMode(TRIG_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+
+  servo.write(0);
 }
 
 void loop() {
@@ -128,7 +130,6 @@ int checkDistance() {
   return distance;
 }
 
-
 /* IR Functions
 void readIR(int pin) {
   int sum = 0;
@@ -177,32 +178,4 @@ void turnLeft() {
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
-}
-
-void moveAndCheckColor(int tColour) {
-  forward();
-  delay(500);
-  bool begin = true;
-  int almost180 = 500; // TODO: fix
-  int step = int(almost180/3);
-  int colour = identifyColor();
-  forward();
-  delay(500);
-  while(colour != 3){ //3= brown
-    int colour = identifyColor();
-    if (colour == tColour){
-      begin = true;
-      forward();
-        delay(500);
-    }
-    else if (begin){
-      turnLeft();//amount to get to just under 180deg left
-      delay(almost180);
-      begin = false;
-    }
-    else{
-      turnRight();
-      delay(step);
-    }
-  }
 }
