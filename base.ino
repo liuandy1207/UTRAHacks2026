@@ -272,6 +272,17 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
     }
     //todo:ditnce 
   }
+findBall(){
+  turnLeft();
+  int almost90 = 2500; 
+  delay(almost90);
+  int minDist = 1000;
+  int totalTurn = 0;
+  while(totalTurn < almost90*2){
+    
+  }
+  //lowly turn right
+}
 void loop() {
   
 }
