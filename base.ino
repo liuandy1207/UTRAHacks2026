@@ -22,8 +22,18 @@ Servo servo;
 #define S3 10
 #define OUT 9
 
+// Calibration Values
+int redMin = 18,  redMax = 29;
+int greenMin = 18, greenMax = 44;
+int blueMin = 16, blueMax = 29;
+
+// Calibration Values 2
+int redMin2 = 12,  redMax2 = 30;
+int greenMin2 = 21, greenMax2 = 35;
+int blueMin2 = 19, blueMax2 = 32;
+
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(19200);
 
   // Motor Setup
   pinMode(IN1, OUTPUT);
@@ -58,12 +68,6 @@ void rotate(int deg) {
 }
 
 // Color Sensor Functions
-
-// Calibration Values
-int redMin = 11,  redMax = 28;
-int greenMin = 11, greenMax = 32;
-int blueMin = 11, blueMax = 30;
-
 int identifyColor() {
   int r = getAverage(LOW, LOW);
   int g = getAverage(HIGH, HIGH);
@@ -98,11 +102,6 @@ int identifyColor() {
   }
   return 0;
 }
-
-// Calibration Values 2
-int redMin2 = 17,  redMax2 = 31;
-int greenMin2 = 20, greenMax2 = 35;
-int blueMin2 = 18, blueMax2 = 33;
 
 // Use for elevated!!!
 int identifyColor2() {
@@ -218,40 +217,63 @@ void turnRight() {
 
 //new function
 void obstacle_avoidance_sequence() {
-  
-  turnLeft();
-  delay(1900);
-  brake();
 
-  forward();
-  delay(3500);
-  brake();
+  // 1. Follow red until obstacle (< 10 cm)
+  if (checkDistance() < 10) {
 
-  turnRight();
-  delay(1900);
-  brake();
 
-  forward();
-  delay(3500);
-  brake();
+    // 2. Turn right for 10 seconds
+    turnLeft();
+    delay(1900);
+    brake();
 
-  // 5. turn left for 10 seconds to face red line
-  turnRight();
-  delay(1900); 
-  brake();
-    
-  // 5. Move forward until object is at red, stopping to poll every 0.25s
-  while (identifyColor() != 1) {
+    // 3. Check distance again
+    if (checkDistance() >= 10) {
+
+      // No obstacle
+      forward();
+      delay(3500);
+      brake();
+
+    } else {
+
+      // Obstacle still present
+      turnLeft();
+      delay(2000);
+      brake();
+
+      forward();
+      delay(3500);
+      brake();
+    }
+
+    // 4. Turn left for 10 seconds to parallel with red line
+    turnRight();
+    delay(1900);
+    brake();
+
     forward();
-    delay(250);
-  }
-  brake();
+    delay(3500);
+    brake();
 
-  // 6. Turn left for 1 seconds
-  turnLeft();
-  delay(1000);
-  brake();
+    // 5. turn left for 10 seconds to face red line
+    turnRight();
+    delay(1900); 
+    brake();
+    
+    // 5. Move forward until object is at red, stopping to poll every 0.25s
+    while (identifyColor() != 1) {
+      forward();
+      delay(250);
+    }
+    brake();
+
+    // 6. Turn left for 10 seconds
+    turnLeft();
+    delay(1000);
+    brake();
   }
+}
 
 //new function end
 void moveAndCheckColor(int tColour, char dir, int bg) {
@@ -261,15 +283,17 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
   int almost90 = 2000; // TODO: fix
   int step = int(almost90/10);
   int colour = identifyColor();
-  forward();
-  delay(500);
   while(colour != 3 && colour != bg){ //3= brown
+    Serial.println("checked");
     if (colour == tColour){
+      Serial.println("straight");
       begin = true;
       forward();
-        delay(500);
+      delay(500);
     }
     else if (begin){
+      Serial.println("command");
+
       if(dir == 'l'){
         turnLeft();//amount to get to just under 180deg left
       }
@@ -292,32 +316,48 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
     if (dist < 20){
       return;
     }
+    colour = identifyColor();
   }
-  colour = identifyColor();
 }
-
 void findBall(){
   turnLeft();
   int almost90 = 2500; 
   delay(almost90);
   int minDist = 1000;
   int totalTurn = 0;
-  int distFromMin = 0;
   while(totalTurn < almost90*2){
-    turnRight();
-    delay(almost90/10);
-    totalTurn += almost90/10;
-    if (checkDistance() < minDist){
-      minDist = checkDistance();
-      distFromMin = 0;
-    } else {
-      distFromMin += almost90/10;
-    }
-  turnLeft();
-  delay(distFromMin);
+    
   }
+  //lowly turn right
 }
+// =================================
 
+// =================================
+
+// Segment 1
 void loop() {
-  
+
+// follow red line 
+   moveAndCheckColor(1, 'l', 0);
+   Serial.print("meow");
+
+// pick up cube
+   backward();
+   delay(2000);
+   turnRight();
+   delay(1000);
+   forward();
+   delay(2500);
+   rotate(90);
+   delay(500);
+
+   turnLeft();
+   delay(1000);
+
+   while (1 != identifyColor()) {
+      forward();
+      delay(200);
+   }
+   // reup here
+
 }
