@@ -230,18 +230,6 @@ void obstacle_avoidance_sequence() {
     turnRight();
     delay(2000);
     brake();
-
-    forward();
-    delay(3500);
-    brake();
-  
-    turnRight();
-    delay(1900);
-    brake();
-
-    forward();
-    delay(3500);
-    brake();
     
     int ARHHAH = identifyColor2();
     while (ARHHAH != 1) {
@@ -250,7 +238,17 @@ void obstacle_avoidance_sequence() {
     delay(50);
     ARHHAH = identifyColor2();
    }
-   // reup here
+
+   forward();
+    delay(800);
+   brake();
+
+   turnLeft();
+    delay(2300);
+    brake();
+
+   forward();
+    delay(500);
    brake();
   }
 

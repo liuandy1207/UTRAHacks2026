@@ -363,38 +363,57 @@ void moveAndCheckColor2(int tColour, char dir, int bg) {
 }
 
 // =================================
-void findBall(){
-  turnLeft();
-  int almost90 = 2500; 
-  delay(almost90);
+void findBall(char d){
   int minDist = 1000;
   int totalTurn = 0;
   int distFromMin = 0;
-  while(totalTurn < almost90*2){
-    turnRight();
-    delay(almost90/10);
-    totalTurn += almost90/10;
-    if (checkDistance() < minDist){
-      minDist = checkDistance();
-      distFromMin = 0;
-    } else {
-      distFromMin += almost90/10;
-    }
-  turnLeft();
-  delay(distFromMin);
-  }
+  if (d == 'r') {
+    while(true){
+      turnLeft();
+      delay(200);
+      long dist = checkDistance();
+      if (dist < minDist && dist < 100){
+          minDist = dist;
+          distFromMin = 0;
+      } else if (dist > minDist + 5){
+          break;
+      }
 }
-
+    turnRight();
+    delay(800);
+  } else {
+    while(true){
+      turnRight();
+      delay(200);
+      long dist = checkDistance();
+      if (dist < minDist && dist < 100){
+          minDist = dist;
+          distFromMin = 0;
+      } else if (dist > minDist + 5){
+          break;
+      }
+  }
+  turnLeft();
+    delay(800);
+}
+}
 // =================================
 
 
 void loop() {
-    findBall();
-    while (identifyColor() != 1) {
-        forward();
-        delay(250);
-    }
-    brake();
+    findBall('l');
+
+    int ARHHAH = identifyColor2();
+    while (ARHHAH != 3) {
+      Serial.println(ARHHAH);
+      forward();
+      delay(100);
+      ARHHAH = identifyColor2();
+   }
+   // reup here
+   brake();
+
+   delay(10000);
 }
 
 
