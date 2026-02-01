@@ -31,3 +31,82 @@
 // turn 90 deg 90
 
 // re-up
+
+void loop{
+    //const
+    int red = 1;
+    int green = 2;
+    int blue = 3;
+    int black = 4;
+    int white = 0;
+    int unc = 0;
+
+    //
+    //trace red (left)
+    //trace red (left)
+    moveAndCheckColor(red, 'l', white);
+    //returns when hit object
+
+    //object deterance
+    obstacle_avoidance_sequence();
+
+    //trace red (right)
+    moveAndCheckColor(red, 'r', white);
+    //returns when hit object
+    obstacle_avoidance_sequence();
+    //trace red (left)
+    moveAndCheckColor(red, 'l', white);
+    //returns when blue
+
+
+    //putdown!!
+    
+    //left 90
+    turnLeft();
+    delay(1250);
+    //omething bout butt
+    //rotte(0)
+    rotate(0);
+    delay(50);
+    //bckwrd()
+    backward();
+    delay(1500);
+    turnRight();
+    delay(1250);
+
+    //trace red (left)
+    moveAndCheckColor(red, 'l', white);
+    //turn
+    moveAndCheckColor(green, 'l', white);
+    //top bc pick up put down
+    //
+        //call pick up (check what pick up returns check finl tte)
+    backward();
+    delay(1500);
+    turnRight();
+    delay(1250);
+    forward();
+    delay(1000);
+    rotate(90);
+    delay(50);
+    forward();
+    delay(2000);
+    rotate(0);
+    delay(50);
+
+    turnLeft();
+    delay(2500);
+    forward();
+    delay(1000);
+    rotate(0);
+    delay(50);
+    backward();
+    delay(1000);
+    turnRight();
+    delay(1250);
+    //
+    //
+    moveAndCheckColor(green, 'l', white);
+    moveAndCheckColor(black, 'l', brown);
+
+}
