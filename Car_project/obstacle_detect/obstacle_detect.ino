@@ -1,5 +1,5 @@
-const int TRIG_PIN = 9;
-const int ECHO_PIN = 8;
+const int TRIG_PIN = 3;
+const int ECHO_PIN = 4;
 
 void setup() {
   Serial.begin(9600);       // For debugging/output
@@ -28,9 +28,55 @@ int checkDistance() {
   float distance = duration * 0.034 / 2;
 
   // Return 1 if object is 10cm or less, otherwise 0
-  if (distance <= 10) {
-    return 1;
-  } else {
-    return 0;
+  return distance;
+  // if (distance <= 10) {
+  //   return 1;
+  // } else {
+  //   return 0;
+  // }
+}
+void obstacle_avoidance_sequence() {
+
+  // 1. Follow red until obstacle (< 10 cm)
+  while (checkDistance() >= 10) {
+    followRed();
   }
+  brake();
+
+  // 2. Turn right for 10 seconds
+  turnRight();
+  delay(10000);
+  brake();
+
+  // 3. Check distance again
+  if (checkDistance() >= 10) {
+
+    // No obstacle
+    forward();
+    delay(10000);
+    brake();
+
+  } else {
+
+    // Obstacle still present
+    turnRight();
+    delay(10000);
+    brake();
+
+    forward();
+    delay(10000);
+    brake();
+  }
+
+  // 5. Move forward until object is at red, stopping to poll every 0.25s
+  while (identifyColor() != 1) {
+    forward();
+    delay(250);
+  }
+  brake();
+
+  // 6. Turn left for 10 seconds
+  turnLeft();
+  delay(10000);
+  brake();
 }
