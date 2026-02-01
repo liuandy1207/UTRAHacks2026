@@ -287,7 +287,6 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
   forward();
   delay(500);
   while(colour != 3 && colour != bg){ //3= brown
-    int colour = identifyColor();
     if (colour == tColour){
       begin = true;
       forward();
@@ -317,6 +316,7 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
       return;
     }
   }
+  int colour = identifyColor();
 }
 findBall(){
   turnLeft();
