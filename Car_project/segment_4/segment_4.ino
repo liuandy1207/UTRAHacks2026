@@ -348,8 +348,9 @@ findBall(){
 }
 
 void loop() {
-  moveforward();
   delay(2000);
+  moveforward();
+  delay(1000);
   moveAndCheckColor(BLACK, 'r', RED);
 
   moveAndCheckColor(GREEN, 'l', RED);
