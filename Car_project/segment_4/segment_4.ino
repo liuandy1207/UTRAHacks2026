@@ -19,7 +19,7 @@
 #define BLACK 4
 
 
-/// Servo
+// Servo
 #include <Servo.h>
 Servo servo;
 #define servoPin 7
@@ -43,10 +43,18 @@ Servo servo;
 #define S3 10
 #define OUT 9
 
+// Calibration Values
+int redMin = 15,  redMax = 30;
+int greenMin = 18, greenMax = 31;
+int blueMin = 17, blueMax = 31;
 
+// Calibration Values 2
+int redMin2 = 17,  redMax2 = 28;
+int greenMin2 = 22, greenMax2 = 34;
+int blueMin2 = 21, blueMax2 = 27;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Motor Setup
   pinMode(IN1, OUTPUT);
@@ -73,14 +81,14 @@ void setup() {
   servo.write(0);
 }
 
+// Servo Functions
+void rotate(int deg) {
+  servo.write(deg);
+  // 0 puts the claw low, back leg high
+  // 90 puts the claw high, back leg low
+}
 
 // Color Sensor Functions
-
-// Calibration Values
-int redMin = 11,  redMax = 28;
-int greenMin = 11, greenMax = 32;
-int blueMin = 11, blueMax = 30;
-
 int identifyColor() {
   int r = getAverage(LOW, LOW);
   int g = getAverage(HIGH, HIGH);
@@ -115,11 +123,6 @@ int identifyColor() {
   }
   return 0;
 }
-
-// Calibration Values 2
-int redMin2 = 17,  redMax2 = 31;
-int greenMin2 = 20, greenMax2 = 35;
-int blueMin2 = 18, blueMax2 = 33;
 
 // Use for elevated!!!
 int identifyColor2() {
@@ -295,22 +298,21 @@ void obstacle_avoidance_sequence() {
 
 //new function end
 void moveAndCheckColor(int tColour, char dir, int bg) {
-  forward();
-  delay(500);
   bool begin = true;
   int almost90 = 2000; // TODO: fix
   int step = int(almost90/10);
   int colour = identifyColor();
-  forward();
-  delay(500);
-  while(colour != 3 && colour != bg){ //3= brown
-    int colour = identifyColor();
+  while(colour != 3 || colour != bg){ //3= brown
+    Serial.println("checked");
     if (colour == tColour){
+      Serial.println("straight");
       begin = true;
       forward();
-        delay(500);
+      delay(500);
     }
     else if (begin){
+      Serial.println("command");
+
       if(dir == 'l'){
         turnLeft();//amount to get to just under 180deg left
       }
@@ -333,9 +335,10 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
     if (dist < 20){
       return;
     }
+    colour = identifyColor();
   }
 }
-findBall(){
+void findBall(){
   turnLeft();
   int almost90 = 2500; 
   delay(almost90);
@@ -345,6 +348,49 @@ findBall(){
     
   }
   //lowly turn right
+}
+
+
+void moveAndCheckColor2(int tColour, char dir, int bg) {
+  bool begin = true;
+  int almost90 = 2000; // TODO: fix
+  int step = int(almost90/10);
+  int colour = identifyColor2();
+  while(colour != 3 || colour != bg){ //3= brown
+    Serial.println("checked");
+    if (colour == tColour){
+      Serial.println("straight");
+      begin = true;
+      forward();
+      delay(500);
+    }
+    else if (begin){
+      Serial.println("command");
+
+      if(dir == 'l'){
+        turnLeft();//amount to get to just under 180deg left
+      }
+      else{
+        turnRight();//amount to get to just under 180deg left
+      }
+      delay(almost90); //dir
+      begin = false;
+    }
+    else{
+      if(dir == 'l'){
+        turnRight(); //dir
+      }
+      else{
+        turnLeft();
+      }
+      delay(step);
+    }
+    int dist = checkDistance();
+    if (dist < 20){
+      return;
+    }
+    colour = identifyColor2();
+  }
 }
 
 void loop() {

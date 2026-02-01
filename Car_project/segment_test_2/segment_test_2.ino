@@ -22,8 +22,18 @@ Servo servo;
 #define S3 10
 #define OUT 9
 
+// Calibration Values
+int redMin = 15,  redMax =30;
+int greenMin = 18, greenMax = 31;
+int blueMin = 17, blueMax = 31;
+
+// Calibration Values 2
+int redMin2 = 17,  redMax2 = 28;
+int greenMin2 = 22, greenMax2 = 27;
+int blueMin2 = 21, blueMax2 = 34;
+
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Motor Setup
   pinMode(IN1, OUTPUT);
@@ -47,7 +57,7 @@ void setup() {
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
 
-  servo.write(0);
+  servo.write(90);
 }
 
 // Servo Functions
@@ -58,12 +68,6 @@ void rotate(int deg) {
 }
 
 // Color Sensor Functions
-
-// Calibration Values
-int redMin = 11,  redMax = 28;
-int greenMin = 11, greenMax = 32;
-int blueMin = 11, blueMax = 30;
-
 int identifyColor() {
   int r = getAverage(LOW, LOW);
   int g = getAverage(HIGH, HIGH);
@@ -82,6 +86,42 @@ int identifyColor() {
     Serial.println("BLACK");
     return 4;
   } else if (r > 200 && g > 200 && b > 200) {
+    Serial.println("WHITE");
+    return 0;
+  } else if (r > g && r > b) {
+    Serial.println("RED/BROWN");
+    return 1;
+  } else if (g > r && g > b) {
+    Serial.println("GREEN");
+    return 2;
+  } else if (b > r && b > g) {
+    Serial.println("BLUE");
+    return 3;
+  } else {
+    Serial.println("UNCERTAIN");
+  }
+  return 0;
+}
+
+// Use for elevated!!!
+int identifyColor2() {
+  int r = getAverage(LOW, LOW);
+  int g = getAverage(HIGH, HIGH);
+  int b = getAverage(LOW, HIGH);
+
+  r = constrain(map(r, redMin2, redMax2, 255, 0), 0, 255);
+  g = constrain(map(g, greenMin2, greenMax2, 255, 0), 0, 255);
+  b = constrain(map(b, blueMin2, blueMax2, 255, 0), 0, 255);
+  
+  Serial.print("R: "); Serial.print(r);
+  Serial.print(" G: "); Serial.print(g);
+  Serial.print(" B: "); Serial.print(b);
+
+  Serial.print(" - Color: ");
+  if (r < 50 && g < 50 && b < 50) {
+    Serial.println("BLACK");
+    return 4;
+  } else if (r > 160 && g > 180 && b > 180) {
     Serial.println("WHITE");
     return 0;
   } else if (r > g && r > b) {
@@ -237,22 +277,21 @@ void obstacle_avoidance_sequence() {
 
 //new function end
 void moveAndCheckColor(int tColour, char dir, int bg) {
-  forward();
-  delay(500);
   bool begin = true;
   int almost90 = 2000; // TODO: fix
   int step = int(almost90/10);
   int colour = identifyColor();
-  forward();
-  delay(500);
   while(colour != 3 && colour != bg){ //3= brown
-    int colour = identifyColor();
+    Serial.println("checked");
     if (colour == tColour){
+      Serial.println("straight");
       begin = true;
       forward();
-        delay(500);
+      delay(500);
     }
     else if (begin){
+      Serial.println("command");
+
       if(dir == 'l'){
         turnLeft();//amount to get to just under 180deg left
       }
@@ -273,15 +312,116 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
     }
     int dist = checkDistance();
     if (dist < 20){
-      obstacle_avoidance_sequence();
+      return;
     }
+    colour = identifyColor();
   }
+}
+void findBall(){
+  turnLeft();
+  int almost90 = 2500; 
+  delay(almost90);
+  int minDist = 1000;
+  int totalTurn = 0;
+  while(totalTurn < almost90*2){
+    
+  }
+  //lowly turn right
 }
 
 
+void moveAndCheckColor2(int tColour, char dir, int bg) {
+  bool begin = true;
+  int almost90 = 2000; // TODO: fix
+  int step = int(almost90/10);
+  int colour = identifyColor2();
+  while(colour != 3 && colour != bg){ //3= brown
+    Serial.println("checked");
+    if (colour == tColour){
+      Serial.println("straight");
+      begin = true;
+      forward();
+      delay(500);
+    }
+    else if (begin){
+      Serial.println("command");
 
+      if(dir == 'l'){
+        turnLeft();//amount to get to just under 180deg left
+      }
+      else{
+        turnRight();//amount to get to just under 180deg left
+      }
+      delay(almost90); //dir
+      begin = false;
+    }
+    else{
+      if(dir == 'l'){
+        turnRight(); //dir
+      }
+      else{
+        turnLeft();
+      }
+      delay(step);
+    }
+    int dist = checkDistance();
+    if (dist < 20){
+      return;
+    }
+    colour = identifyColor2();
+  }
+}
+
+// =================================
+
+// Segment 1
 void loop() {
-  delay(2000);
-  moveAndCheckColor(1, 'r', 0); //looking for red, turning left
+    //const
+    int red = 1;
+    int green = 2;
+    int blue = 3;
+    int black = 4;
+    int white = 0;
+    int unc = 0;
 
+    //
+    //trace red (left)
+    //trace red (left)
+    moveAndCheckColor2(red, 'l', white);
+    //returns when hit object
+
+    // //object deterance
+    // obstacle_avoidance_sequence();
+
+    // //trace red (right)
+    // moveAndCheckColor2(red, 'r', white);
+    // //returns when hit object
+    // obstacle_avoidance_sequence();
+    // //trace red (left)
+    // moveAndCheckColor2(red, 'l', white);
+    // //returns when blue
+
+
+    // //putdown!!
+    
+    // //left 90
+    // turnLeft();
+    // delay(1250);
+    // //omething bout butt
+    // //rotte(0)
+    // rotate(0);
+    // delay(50);
+    // //bckwrd()
+    // backward();
+    // delay(1500);
+    // turnRight();
+    // delay(1250);
+
+    // //trace red (left)
+    // moveAndCheckColor(red, 'l', white);
+    // //turn
+
+    brake();
+
+    delay(10000);
 }

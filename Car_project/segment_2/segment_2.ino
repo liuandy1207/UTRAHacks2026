@@ -1,5 +1,3 @@
-// paste the base.ino here
-
 // Servo
 #include <Servo.h>
 Servo servo;
@@ -25,14 +23,14 @@ Servo servo;
 #define OUT 9
 
 // Calibration Values
-int redMin = 18,  redMax = 26;
-int greenMin = 13, greenMax = 33;
-int blueMin = 13, blueMax = 28;
+int redMin = 15,  redMax = 30;
+int greenMin = 18, greenMax = 31;
+int blueMin = 17, blueMax = 31;
 
 // Calibration Values 2
-int redMin2 = 12,  redMax2 = 28;
-int greenMin2 = 20, greenMax2 = 26;
-int blueMin2 = 19, blueMax2 = 30;
+int redMin2 = 17,  redMax2 = 28;
+int greenMin2 = 22, greenMax2 = 34;
+int blueMin2 = 21, blueMax2 = 27;
 
 void setup() {
   Serial.begin(115200);
@@ -59,7 +57,7 @@ void setup() {
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
 
-  servo.write(90);
+  servo.write(90); // start at pos 90
 }
 
 // Servo Functions
@@ -283,7 +281,7 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
   int almost90 = 2000; // TODO: fix
   int step = int(almost90/10);
   int colour = identifyColor();
-  while(colour != 3 && colour != bg){ //3= brown
+  while(colour != 3 || colour != bg){ //3= brown
     Serial.println("checked");
     if (colour == tColour){
       Serial.println("straight");
@@ -337,7 +335,7 @@ void moveAndCheckColor2(int tColour, char dir, int bg) {
   int almost90 = 2000; // TODO: fix
   int step = int(almost90/10);
   int colour = identifyColor2();
-  while(colour != 3 && colour != bg){ //3= brown
+  while(colour != 3 || colour != bg){ //3= brown
     Serial.println("checked");
     if (colour == tColour){
       Serial.println("straight");
@@ -405,7 +403,7 @@ void moveAndCheckColor2(int tColour, char dir, int bg) {
 
 // re-up
 
-void loop{
+void loop() {
     //const
     int red = 1;
     int green = 2;
@@ -479,7 +477,7 @@ void loop{
     delay(1250);
     //
     //
-    moveAndCheckColor(green, 'l', white);
-    moveAndCheckColor(black, 'l', brown);
+    //moveAndCheckColor(green, 'l', white);
+    //moveAndCheckColor(black, 'l', brown);
 
 }
