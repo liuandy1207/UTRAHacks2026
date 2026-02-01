@@ -60,12 +60,12 @@ void rotate(int deg) {
 // Color Sensor Functions
 
 // Calibration Values
-int redMin = 25; 
-int redMax = 267; 
-int greenMin = 26; 
-int greenMax = 231; 
+int redMin = 20; 
+int redMax = 60; 
+int greenMin = 20; 
+int greenMax = 60; 
 int blueMin = 20; 
-int blueMax = 216; 
+int blueMax = 60; 
 
 int identifyColor() {
   int r = getAverage(LOW, LOW);
