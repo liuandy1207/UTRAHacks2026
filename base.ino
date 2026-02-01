@@ -277,13 +277,11 @@ void obstacle_avoidance_sequence() {
 
 //new function end
 void moveAndCheckColor(int tColour, char dir, int bg) {
-  forward();
-  delay(500);
   bool begin = true;
   int almost90 = 2000; // TODO: fix
   int step = int(almost90/10);
   int colour = identifyColor();
-  while(colour != 3 && colour != bg){ //3= brown
+  while(colour != 3 && colour != bg){ //3 = blue
     Serial.println("checked");
     if (colour == tColour){
       Serial.println("straight");
