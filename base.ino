@@ -11,8 +11,9 @@ Servo servo;
 #define IN3 4
 #define IN4 5
 
-// IR Sensors
-#define IR1 8
+// Echo Sensor
+#define TRIG 8
+#define ECHO 6
 
 // Color Sensor
 #define S0 13
@@ -30,9 +31,6 @@ void setup() {
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
 
-  // IR Setup
-  pinMode(IR1, INPUT);
-
   // Servo Setup
   servo.attach(servoPin);
 
@@ -45,7 +43,9 @@ void setup() {
   digitalWrite(S0, HIGH); // set frequency scaling
   digitalWrite(S1, LOW);  
 
-  servo.write(0);
+  // Echo Sensor Setup
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
 }
 
 void loop() {
@@ -114,8 +114,22 @@ int getAverage(int s2State, int s3State) {
   return sum / readings;
 }
 
+// Echo Sensor Code
+int checkDistance() {
+  // clear it
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+  // get the reading
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG, LOW);
+  long duration = pulseIn(ECHO, HIGH);
+  float distance = duration * 0.034 / 2;
+  return distance;
+}
 
-// IR Functions
+
+/* IR Functions
 void readIR(int pin) {
   int sum = 0;
   int readings = 10;
@@ -126,7 +140,8 @@ void readIR(int pin) {
   int state = (sum > readings/2) ? HIGH : LOW;
   Serial.println(state ? "Object Detected!" : "Naw...");
   delay(100);
-}
+} 
+*/
 
 // Motor Functions
 void backward() {

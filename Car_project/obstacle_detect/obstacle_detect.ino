@@ -68,9 +68,10 @@ void obstacle_avoidance_sequence() {
     brake();
   }
 
-  // 5. Move forward until object is < 10 cm
-  while (checkDistance() >= 10) {
+  // 5. Move forward until object is at red, stopping to poll every 0.25s
+  while (identifyColor() != 1) {
     forward();
+    delay(250);
   }
   brake();
 
