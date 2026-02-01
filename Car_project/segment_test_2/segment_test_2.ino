@@ -11,8 +11,9 @@ Servo servo;
 #define IN3 4
 #define IN4 5
 
-// IR Sensors
-#define IR1 8
+// Echo Sensor
+#define TRIG 8
+#define ECHO 6
 
 // Color Sensor
 #define S0 13
@@ -30,9 +31,6 @@ void setup() {
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
 
-  // IR Setup
-  pinMode(IR1, INPUT);
-
   // Servo Setup
   servo.attach(servoPin);
 
@@ -44,28 +42,27 @@ void setup() {
   pinMode(OUT, INPUT);
   digitalWrite(S0, HIGH); // set frequency scaling
   digitalWrite(S1, LOW);  
-}
 
-void loop() {
+  // Echo Sensor Setup
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
 
+  servo.write(0);
 }
 
 // Servo Functions
 void rotate(int deg) {
   servo.write(deg);
   // 0 puts the claw low, back leg high
-  // 90 putss the claw high, back leg low
+  // 90 puts the claw high, back leg low
 }
 
 // Color Sensor Functions
 
 // Calibration Values
-int redMin = 20; 
-int redMax = 60; 
-int greenMin = 20; 
-int greenMax = 60; 
-int blueMin = 20; 
-int blueMax = 60; 
+int redMin = 11,  redMax = 28;
+int greenMin = 11, greenMax = 32;
+int blueMin = 11, blueMax = 30;
 
 int identifyColor() {
   int r = getAverage(LOW, LOW);
@@ -83,14 +80,19 @@ int identifyColor() {
   Serial.print(" - Color: ");
   if (r < 50 && g < 50 && b < 50) {
     Serial.println("BLACK");
+    return 4;
   } else if (r > 200 && g > 200 && b > 200) {
     Serial.println("WHITE");
+    return 0;
   } else if (r > g && r > b) {
-    Serial.println("RED");
+    Serial.println("RED/BROWN");
+    return 1;
   } else if (g > r && g > b) {
     Serial.println("GREEN");
+    return 2;
   } else if (b > r && b > g) {
     Serial.println("BLUE");
+    return 3;
   } else {
     Serial.println("UNCERTAIN");
   }
@@ -109,8 +111,21 @@ int getAverage(int s2State, int s3State) {
   return sum / readings;
 }
 
+// Echo Sensor Code
+int checkDistance() {
+  // clear it
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+  // get the reading
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG, LOW);
+  long duration = pulseIn(ECHO, HIGH);
+  float distance = duration * 0.034 / 2;
+  return distance;
+}
 
-// IR Functions
+/* IR Functions
 void readIR(int pin) {
   int sum = 0;
   int readings = 10;
@@ -121,7 +136,8 @@ void readIR(int pin) {
   int state = (sum > readings/2) ? HIGH : LOW;
   Serial.println(state ? "Object Detected!" : "Naw...");
   delay(100);
-}
+} 
+*/
 
 // Motor Functions
 void backward() {
@@ -145,27 +161,61 @@ void brake() {
   digitalWrite(IN4, HIGH);
 }
 
-void turnRight() {
+void turnLeft() {
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, HIGH);
 }
 
-void turnLeft() {
+void turnRight() {
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
 }
 
-void loop() {
-
-  delay(2000);
-
+void moveAndCheckColor(int tColour, char dir) {
   forward();
-  delay(250);
+  delay(500);
+  bool begin = true;
+  int almost90 = 2000; // TODO: fix
+  int step = int(almost90/10);
+  int colour = identifyColor();
+  forward();
+  delay(500);
+  while(colour != 3){ //3= brown
+    int colour = identifyColor();
+    if (colour == tColour){
+      begin = true;
+      forward();
+        delay(500);
+    }
+    else if (begin){
+      if(dir == 'l'){
+        turnLeft();//amount to get to just under 180deg left
+      }
+      else{
+        turnRight();//amount to get to just under 180deg left
+      }
+      delay(almost90); //dir
+      begin = false;
+    }
+    else{
+      if(dir == 'l'){
+        turnRight(); //dir
+      }
+      else{
+        turnLeft();
+      }
+      delay(step);
+    }
+    //todo:ditnce 
+  }
+}
 
-  
+void loop() {
+  delay(2000);
+  moveAndCheckColor(1, 'l'); //looking for red, turning left
 
 }

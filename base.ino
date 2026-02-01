@@ -161,30 +161,30 @@ void brake() {
   digitalWrite(IN4, HIGH);
 }
 
-void turnRight() {
+void turnLeft() {
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, HIGH);
 }
 
-void turnLeft() {
+void turnRight() {
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
 }
 
-void moveAndCheckColor(int tColour, char dir) {
+void moveAndCheckColor(int tColour, char dir, int bg) {
   forward();
   delay(500);
   bool begin = true;
-  int almost90 = 500; // TODO: fix
-  int step = int(almost90/3);
+  int almost90 = 2000; // TODO: fix
+  int step = int(almost90/10);
   int colour = identifyColor();
   forward();
   delay(500);
-  while(colour != 3){ //3= brown
+  while(colour != 3 and && colour != bg){ //3= brown
     int colour = identifyColor();
     if (colour == tColour){
       begin = true;
@@ -209,6 +209,10 @@ void moveAndCheckColor(int tColour, char dir) {
         turnLeft()
       }
       delay(step);
+    }
+    int dist = checkDistance();
+    if (dist < 20){
+
     }
     //todo:ditnce 
   }
