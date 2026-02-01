@@ -35,3 +35,47 @@ int checkDistance() {
   //   return 0;
   // }
 }
+void obstacle_avoidance_sequence() {
+
+  // 1. Follow red until obstacle (< 10 cm)
+  while (checkDistance() >= 10) {
+    followRed();
+  }
+  brake();
+
+  // 2. Turn right for 10 seconds
+  turnRight();
+  delay(10000);
+  brake();
+
+  // 3. Check distance again
+  if (checkDistance() >= 10) {
+
+    // No obstacle
+    forward();
+    delay(10000);
+    brake();
+
+  } else {
+
+    // Obstacle still present
+    turnRight();
+    delay(10000);
+    brake();
+
+    forward();
+    delay(10000);
+    brake();
+  }
+
+  // 5. Move forward until object is < 10 cm
+  while (checkDistance() >= 10) {
+    forward();
+  }
+  brake();
+
+  // 6. Turn left for 10 seconds
+  turnLeft();
+  delay(10000);
+  brake();
+}
