@@ -316,7 +316,7 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
       return;
     }
   }
-  int colour = identifyColor();
+  colour = identifyColor();
 }
 findBall(){
   turnLeft();
