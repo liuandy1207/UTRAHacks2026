@@ -273,10 +273,10 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
     }
     int dist = checkDistance();
     if (dist < 20){
-      obstacle_avoidance_sequence();
+      return;
     }
-    //todo:ditnce 
   }
+}
 findBall(){
   turnLeft();
   int almost90 = 2500; 
@@ -287,8 +287,6 @@ findBall(){
     
   }
   //lowly turn right
-}
-  }
 }
 void loop() {
   
