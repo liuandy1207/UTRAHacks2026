@@ -94,33 +94,5 @@ void turnLeft() {
 
 void loop() {
 
-  delay(2000);
-  Serial.println("Rotate Servo to 0");
-  rotate(0); // low
-  delay(1000);
 
-  forward();
-  delay(2000);
-  brake();
-
-  Serial.println("Rotate Servo to 90");
-  rotate(90); // high
-
-  backward();
-  delay(1000);
-  brake();
-
-  forward();
-  delay(1000);
-  brake();
-
-  rotate(0); // low
-  delay(1000);
-
-  backward();
-  delay(1000);
-
-  brake();
-
-  Serial.println("End of Test");
 }
