@@ -318,7 +318,7 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
   }
   colour = identifyColor();
 }
-findBall(){
+void findBall(){
   turnLeft();
   int almost90 = 2500; 
   delay(almost90);
