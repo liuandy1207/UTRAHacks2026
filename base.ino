@@ -53,6 +53,8 @@ void loop() {
 // Servo Functions
 void rotate(int deg) {
   servo.write(deg);
+  // 0 puts the claw low, back leg high
+  // 90 putss the claw high, back leg low
 }
 
 // Color Sensor Functions
@@ -122,14 +124,14 @@ void readIR(int pin) {
 }
 
 // Motor Functions
-void forward() {
+void backward() {
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
 }
 
-void backward() {
+void forward() {
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, LOW);
@@ -143,14 +145,14 @@ void brake() {
   digitalWrite(IN4, HIGH);
 }
 
-void turnLeft() {
+void turnRight() {
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, HIGH);
 }
 
-void turnRight() {
+void turnLeft() {
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, HIGH);
