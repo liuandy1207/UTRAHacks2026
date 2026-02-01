@@ -3,23 +3,35 @@
 // =================================
 
 // Segment 1
+void loop {
 
 // Follow Black Line
+   moveAndCheckColor(4, 'l', 0);
 
-// look for red line 
+// follow red line 
+   moveAndCheckColor(1, 'l', 0);
 
-// turn 90 deg 
+// pick up cube
+   backward();
+   delay(1500);
+   turnRight();
+   delay(1000);
 
-// poll slowly left for red line 
+   rotate(90);
+   delay(50);
+   forward();
+   delay(2000);
+   rotate(0);
+   delay(50);
 
-// when red start moveAndCheckColour(red)
-   // should stop at blue
+   turnLeft();
+   delay(1000);
 
-// turn 90 deg right
+   while (1 != identifyColor()) {
+      forward();
+      delay(200);
+   }
+   // reup here
 
-// pick up cube 
-
-// turn 90 deg left
-
-// forward 
+}
 
