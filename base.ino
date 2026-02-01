@@ -99,6 +99,47 @@ int identifyColor() {
   return 0;
 }
 
+// Calibration Values 2
+int redMin2 = 17,  redMax2 = 31;
+int greenMin2 = 20, greenMax2 = 35;
+int blueMin2 = 18, blueMax2 = 33;
+
+// Use for elevated!!!
+int identifyColor2() {
+  int r = getAverage(LOW, LOW);
+  int g = getAverage(HIGH, HIGH);
+  int b = getAverage(LOW, HIGH);
+
+  r = constrain(map(r, redMin2, redMax2, 255, 0), 0, 255);
+  g = constrain(map(g, greenMin2, greenMax2, 255, 0), 0, 255);
+  b = constrain(map(b, blueMin2, blueMax2, 255, 0), 0, 255);
+  
+  Serial.print("R: "); Serial.print(r);
+  Serial.print(" G: "); Serial.print(g);
+  Serial.print(" B: "); Serial.print(b);
+
+  Serial.print(" - Color: ");
+  if (r < 50 && g < 50 && b < 50) {
+    Serial.println("BLACK");
+    return 4;
+  } else if (r > 180 && g > 180 && b > 180) {
+    Serial.println("WHITE");
+    return 0;
+  } else if (r > g && r > b) {
+    Serial.println("RED/BROWN");
+    return 1;
+  } else if (g > r && g > b) {
+    Serial.println("GREEN");
+    return 2;
+  } else if (b > r && b > g) {
+    Serial.println("BLUE");
+    return 3;
+  } else {
+    Serial.println("UNCERTAIN");
+  }
+  return 0;
+}
+
 int getAverage(int s2State, int s3State) {
   int sum = 0;
   int readings = 50;
@@ -177,63 +218,40 @@ void turnRight() {
 
 //new function
 void obstacle_avoidance_sequence() {
+  
+  turnLeft();
+  delay(1900);
+  brake();
 
-  // 1. Follow red until obstacle (< 10 cm)
-  if (checkDistance() < 10) {
+  forward();
+  delay(3500);
+  brake();
 
+  turnRight();
+  delay(1900);
+  brake();
 
-    // 2. Turn right for 10 seconds
-    turnLeft();
-    delay(1900);
-    brake();
+  forward();
+  delay(3500);
+  brake();
 
-    // 3. Check distance again
-    if (checkDistance() >= 10) {
-
-      // No obstacle
-      forward();
-      delay(3500);
-      brake();
-
-    } else {
-
-      // Obstacle still present
-      turnLeft();
-      delay(2000);
-      brake();
-
-      forward();
-      delay(3500);
-      brake();
-    }
-
-    // 4. Turn left for 10 seconds to parallel with red line
-    turnRight();
-    delay(1900);
-    brake();
-
-    forward();
-    delay(3500);
-    brake();
-
-    // 5. turn left for 10 seconds to face red line
-    turnRight();
-    delay(1900); 
-    brake();
+  // 5. turn left for 10 seconds to face red line
+  turnRight();
+  delay(1900); 
+  brake();
     
-    // 5. Move forward until object is at red, stopping to poll every 0.25s
-    while (identifyColor() != 1) {
-      forward();
-      delay(250);
-    }
-    brake();
-
-    // 6. Turn left for 10 seconds
-    turnLeft();
-    delay(1000);
-    brake();
+  // 5. Move forward until object is at red, stopping to poll every 0.25s
+  while (identifyColor() != 1) {
+    forward();
+    delay(250);
   }
-}
+  brake();
+
+  // 6. Turn left for 1 seconds
+  turnLeft();
+  delay(1000);
+  brake();
+  }
 
 //new function end
 void moveAndCheckColor(int tColour, char dir, int bg) {
@@ -246,7 +264,6 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
   forward();
   delay(500);
   while(colour != 3 && colour != bg){ //3= brown
-    int colour = identifyColor();
     if (colour == tColour){
       begin = true;
       forward();
@@ -276,18 +293,31 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
       return;
     }
   }
+  colour = identifyColor();
 }
-findBall(){
+
+void findBall(){
   turnLeft();
   int almost90 = 2500; 
   delay(almost90);
   int minDist = 1000;
   int totalTurn = 0;
+  int distFromMin = 0;
   while(totalTurn < almost90*2){
-    
+    turnRight();
+    delay(almost90/10);
+    totalTurn += almost90/10;
+    if (checkDistance() < minDist){
+      minDist = checkDistance();
+      distFromMin = 0;
+    } else {
+      distFromMin += almost90/10;
+    }
+  turnLeft();
+  delay(distFromMin);
   }
-  //lowly turn right
 }
+
 void loop() {
   
 }

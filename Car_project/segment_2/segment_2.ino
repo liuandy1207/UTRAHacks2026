@@ -6,11 +6,9 @@
     // should reach obstacle avoidance sequence again
     // return to red line
 
+
 // should stop at blue line 
 
-// turn 90 deg left 
-
-// drop cube
 
 // run path finding red again (turn right first priority)
     // terminate on green / black  

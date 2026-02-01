@@ -3,7 +3,7 @@
 // =================================
 
 // Segment 1
-void loop {
+void loop() {
 
 // Follow Black Line
    moveAndCheckColor(4, 'l', 0);
