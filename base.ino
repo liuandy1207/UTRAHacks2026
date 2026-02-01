@@ -179,12 +179,12 @@ void turnLeft() {
   digitalWrite(IN4, LOW);
 }
 
-void moveAndCheckColor(int tColour) {
+void moveAndCheckColor(int tColour, char dir) {
   forward();
   delay(500);
   bool begin = true;
-  int almost180 = 500; // TODO: fix
-  int step = int(almost180/3);
+  int almost90 = 500; // TODO: fix
+  int step = int(almost90/3);
   int colour = identifyColor();
   forward();
   delay(500);
@@ -196,13 +196,24 @@ void moveAndCheckColor(int tColour) {
         delay(500);
     }
     else if (begin){
-      turnLeft();//amount to get to just under 180deg left
-      delay(almost180);
+      if(dir == 'l'){
+        turnLeft();//amount to get to just under 180deg left
+      }
+      else{
+        turnRight();//amount to get to just under 180deg left
+      }
+      delay(almost90); //dir
       begin = false;
     }
     else{
-      turnRight();
+      if(dir == 'l'){
+        turnRight(); //dir
+      }
+      else{
+        turnLeft()
+      }
       delay(step);
     }
+    //todo:ditnce 
   }
 }
