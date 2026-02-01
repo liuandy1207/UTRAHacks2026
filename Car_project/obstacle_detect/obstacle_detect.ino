@@ -1,5 +1,5 @@
-const int TRIG_PIN = 9;
-const int ECHO_PIN = 8;
+const int TRIG_PIN = 3;
+const int ECHO_PIN = 4;
 
 void setup() {
   Serial.begin(9600);       // For debugging/output
@@ -28,9 +28,10 @@ int checkDistance() {
   float distance = duration * 0.034 / 2;
 
   // Return 1 if object is 10cm or less, otherwise 0
-  if (distance <= 10) {
-    return 1;
-  } else {
-    return 0;
-  }
+  return distance;
+  // if (distance <= 10) {
+  //   return 1;
+  // } else {
+  //   return 0;
+  // }
 }
