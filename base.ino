@@ -23,17 +23,17 @@ Servo servo;
 #define OUT 9
 
 // Calibration Values
-int redMin = 18,  redMax = 29;
-int greenMin = 18, greenMax = 44;
-int blueMin = 16, blueMax = 29;
+int redMin = 18,  redMax = 26;
+int greenMin = 13, greenMax = 33;
+int blueMin = 13, blueMax = 28;
 
 // Calibration Values 2
-int redMin2 = 12,  redMax2 = 30;
-int greenMin2 = 21, greenMax2 = 35;
-int blueMin2 = 19, blueMax2 = 32;
+int redMin2 = 12,  redMax2 = 28;
+int greenMin2 = 20, greenMax2 = 26;
+int blueMin2 = 19, blueMax2 = 30;
 
 void setup() {
-  Serial.begin(19200);
+  Serial.begin(115200);
 
   // Motor Setup
   pinMode(IN1, OUTPUT);
@@ -281,7 +281,7 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
   int almost90 = 2000; // TODO: fix
   int step = int(almost90/10);
   int colour = identifyColor();
-  while(colour != 3 && colour != bg){ //3 = blue
+  while(colour != 3 && colour != bg){ //3= brown
     Serial.println("checked");
     if (colour == tColour){
       Serial.println("straight");
@@ -317,31 +317,64 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
     colour = identifyColor();
   }
 }
-
-
 void findBall(){
   turnLeft();
   int almost90 = 2500; 
   delay(almost90);
   int minDist = 1000;
   int totalTurn = 0;
-  int distFromMin = 0;
   while(totalTurn < almost90*2){
-    turnRight();
-    delay(almost90/10);
-    totalTurn += almost90/10;
-    if (checkDistance() < minDist){
-      minDist = checkDistance();
-      distFromMin = 0;
-    } else {
-      distFromMin += almost90/10;
+    
+  }
+  //lowly turn right
+}
+
+
+void moveAndCheckColor2(int tColour, char dir, int bg) {
+  bool begin = true;
+  int almost90 = 2000; // TODO: fix
+  int step = int(almost90/10);
+  int colour = identifyColor2();
+  while(colour != 3 && colour != bg){ //3= brown
+    Serial.println("checked");
+    if (colour == tColour){
+      Serial.println("straight");
+      begin = true;
+      forward();
+      delay(500);
     }
-  turnLeft();
-  delay(distFromMin);
+    else if (begin){
+      Serial.println("command");
+
+      if(dir == 'l'){
+        turnLeft();//amount to get to just under 180deg left
+      }
+      else{
+        turnRight();//amount to get to just under 180deg left
+      }
+      delay(almost90); //dir
+      begin = false;
+    }
+    else{
+      if(dir == 'l'){
+        turnRight(); //dir
+      }
+      else{
+        turnLeft();
+      }
+      delay(step);
+    }
+    int dist = checkDistance();
+    if (dist < 20){
+      return;
+    }
+    colour = identifyColor2();
   }
 }
 
-// Segment 1
+// =================================
+
+
 void loop() {
 
 }
