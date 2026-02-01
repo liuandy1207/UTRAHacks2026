@@ -399,7 +399,7 @@ void loop() {
   delay(1000);
   moveAndCheckColor(BLACK, 'r', RED);
 
-  moveAndCheckColor(GREEN, 'l', RED);
+  moveAndCheckColor(GREEN, 'l', WHITE);
 
-  moveAndCheckColor(BLACK, 'r', RED)
+  moveAndCheckColor(BLACK, 'r', WHITE);
 }
