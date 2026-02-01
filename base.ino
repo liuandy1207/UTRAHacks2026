@@ -218,63 +218,40 @@ void turnRight() {
 
 //new function
 void obstacle_avoidance_sequence() {
+  
+  turnLeft();
+  delay(1900);
+  brake();
 
-  // 1. Follow red until obstacle (< 10 cm)
-  if (checkDistance() < 10) {
+  forward();
+  delay(3500);
+  brake();
 
+  turnRight();
+  delay(1900);
+  brake();
 
-    // 2. Turn right for 10 seconds
-    turnLeft();
-    delay(1900);
-    brake();
+  forward();
+  delay(3500);
+  brake();
 
-    // 3. Check distance again
-    if (checkDistance() >= 10) {
-
-      // No obstacle
-      forward();
-      delay(3500);
-      brake();
-
-    } else {
-
-      // Obstacle still present
-      turnLeft();
-      delay(2000);
-      brake();
-
-      forward();
-      delay(3500);
-      brake();
-    }
-
-    // 4. Turn left for 10 seconds to parallel with red line
-    turnRight();
-    delay(1900);
-    brake();
-
-    forward();
-    delay(3500);
-    brake();
-
-    // 5. turn left for 10 seconds to face red line
-    turnRight();
-    delay(1900); 
-    brake();
+  // 5. turn left for 10 seconds to face red line
+  turnRight();
+  delay(1900); 
+  brake();
     
-    // 5. Move forward until object is at red, stopping to poll every 0.25s
-    while (identifyColor() != 1) {
-      forward();
-      delay(250);
-    }
-    brake();
-
-    // 6. Turn left for 10 seconds
-    turnLeft();
-    delay(1000);
-    brake();
+  // 5. Move forward until object is at red, stopping to poll every 0.25s
+  while (identifyColor() != 1) {
+    forward();
+    delay(250);
   }
-}
+  brake();
+
+  // 6. Turn left for 1 seconds
+  turnLeft();
+  delay(1000);
+  brake();
+  }
 
 //new function end
 void moveAndCheckColor(int tColour, char dir, int bg) {
