@@ -6,11 +6,25 @@
     // should reach obstacle avoidance sequence again
     // return to red line
 
+moveAndCheckColor(1,'l',0)
+
 // should stop at blue line 
 
-// turn 90 deg left 
+// drop cube, copioed from pick up not sure if itll work
+backward();
+delay(1500);
+turnLeft();
+delay(1000);
 
-// drop cube
+rotate(0);
+delay(50);
+forward();
+delay(2000);
+rotate(0);
+delay(50);
+
+turnRight();
+delay(1000);
 
 // run path finding red again (turn right first priority)
     // terminate on green / black  
