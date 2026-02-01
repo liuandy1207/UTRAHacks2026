@@ -183,8 +183,8 @@ void obstacle_avoidance_sequence() {
 
 
     // 2. Turn right for 10 seconds
-    turnRight();
-    delay(10000);
+    turnLeft();
+    delay(1900);
     brake();
 
     // 3. Check distance again
@@ -192,28 +192,33 @@ void obstacle_avoidance_sequence() {
 
       // No obstacle
       forward();
-      delay(10000);
+      delay(3500);
       brake();
 
     } else {
 
       // Obstacle still present
-      turnRight();
-      delay(10000);
+      turnLeft();
+      delay(2000);
       brake();
 
       forward();
-      delay(10000);
+      delay(3500);
       brake();
     }
 
     // 4. Turn left for 10 seconds to parallel with red line
-    turnLeft();
-    delay(10000);
+    turnRight();
+    delay(1900);
     brake();
+
+    forward();
+    delay(3500);
+    brake();
+
     // 5. turn left for 10 seconds to face red line
-    turnLeft();
-    delay(10000); 
+    turnRight();
+    delay(1900); 
     brake();
     
     // 5. Move forward until object is at red, stopping to poll every 0.25s
@@ -225,7 +230,7 @@ void obstacle_avoidance_sequence() {
 
     // 6. Turn left for 10 seconds
     turnLeft();
-    delay(10000);
+    delay(1000);
     brake();
   }
 }
@@ -240,7 +245,7 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
   int colour = identifyColor();
   forward();
   delay(500);
-  while(colour != 3 and && colour != bg){ //3= brown
+  while(colour != 3 && colour != bg){ //3= brown
     int colour = identifyColor();
     if (colour == tColour){
       begin = true;
@@ -262,7 +267,7 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
         turnRight(); //dir
       }
       else{
-        turnLeft()
+        turnLeft();
       }
       delay(step);
     }
@@ -270,8 +275,8 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
     if (dist < 20){
       obstacle_avoidance_sequence();
     }
-    //todo:ditnce 
   }
+}
 void loop() {
   
 }
