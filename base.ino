@@ -318,8 +318,6 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
   }
   colour = identifyColor();
 }
-void findBall(){
-}
 
 void findBall(){
   turnLeft();
