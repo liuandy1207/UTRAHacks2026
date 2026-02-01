@@ -394,9 +394,8 @@ void moveAndCheckColor2(int tColour, char dir, int bg) {
 }
 
 void loop() {
-  delay(2000);
   moveforward();
-  delay(1000);
+  delay(500);
   moveAndCheckColor(BLACK, 'r', RED);
 
   moveAndCheckColor(GREEN, 'l', WHITE);
