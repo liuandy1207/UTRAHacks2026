@@ -174,9 +174,7 @@ void turnLeft() {
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
 }
-// **************
+
 void loop() {
-  // write code here pleasse
+  
 }
-
-
