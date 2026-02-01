@@ -175,7 +175,68 @@ void turnRight() {
   digitalWrite(IN4, LOW);
 }
 
-void moveAndCheckColor(int tColour, char dir) {
+//new function
+void obstacle_avoidance_sequence() {
+
+  // 1. Follow red until obstacle (< 10 cm)
+  if (checkDistance() < 10) {
+
+
+    // 2. Turn right for 10 seconds
+    turnLeft();
+    delay(1900);
+    brake();
+
+    // 3. Check distance again
+    if (checkDistance() >= 10) {
+
+      // No obstacle
+      forward();
+      delay(3500);
+      brake();
+
+    } else {
+
+      // Obstacle still present
+      turnLeft();
+      delay(2000);
+      brake();
+
+      forward();
+      delay(3500);
+      brake();
+    }
+
+    // 4. Turn left for 10 seconds to parallel with red line
+    turnRight();
+    delay(1900);
+    brake();
+
+    forward();
+    delay(3500);
+    brake();
+
+    // 5. turn left for 10 seconds to face red line
+    turnRight();
+    delay(1900); 
+    brake();
+    
+    // 5. Move forward until object is at red, stopping to poll every 0.25s
+    while (identifyColor() != 1) {
+      forward();
+      delay(250);
+    }
+    brake();
+
+    // 6. Turn left for 10 seconds
+    turnLeft();
+    delay(1000);
+    brake();
+  }
+}
+
+//new function end
+void moveAndCheckColor(int tColour, char dir, int bg) {
   forward();
   delay(500);
   bool begin = true;
@@ -184,7 +245,7 @@ void moveAndCheckColor(int tColour, char dir) {
   int colour = identifyColor();
   forward();
   delay(500);
-  while(colour != 3){ //3= brown
+  while(colour != 3 && colour != bg){ //3= brown
     int colour = identifyColor();
     if (colour == tColour){
       begin = true;
@@ -210,12 +271,17 @@ void moveAndCheckColor(int tColour, char dir) {
       }
       delay(step);
     }
-    //todo:ditnce 
+    int dist = checkDistance();
+    if (dist < 20){
+      obstacle_avoidance_sequence();
+    }
   }
 }
 
+
+
 void loop() {
   delay(2000);
-  moveAndCheckColor(1, 'l'); //looking for red, turning left
+  moveAndCheckColor(1, 'r', 0); //looking for red, turning left
 
 }
