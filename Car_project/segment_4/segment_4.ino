@@ -338,22 +338,11 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
     colour = identifyColor();
   }
 }
-void findBall(){
-  turnLeft();
-  int almost90 = 2500; 
-  delay(almost90);
-  int minDist = 1000;
-  int totalTurn = 0;
-  while(totalTurn < almost90*2){
-    
-  }
-  //lowly turn right
-}
 
 
 void moveAndCheckColor2(int tColour, char dir, int bg) {
   bool begin = true;
-  int almost90 = 2000; // TODO: fix
+  int almost90 = 2000; 
   int step = int(almost90/10);
   int colour = identifyColor2();
   while(colour != 3 || colour != bg){ //3= brown
