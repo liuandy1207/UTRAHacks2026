@@ -163,3 +163,31 @@ void turnLeft() {
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
 }
+
+void moveAndCheckColor(int tColour) {
+  forward();
+  delay(500);
+  bool begin = true;
+  int almost180 = 500; // TODO: fix
+  int step = int(almost180/3);
+  int colour = identifyColor();
+  forward();
+  delay(500);
+  while(colour != 3){ //3= brown
+    int colour = identifyColor();
+    if (colour == tColour){
+      begin = true;
+      forward();
+        delay(500);
+    }
+    else if (begin){
+      turnLeft();//amount to get to just under 180deg left
+      delay(almost180);
+      begin = false;
+    }
+    else{
+      turnRight();
+      delay(step);
+    }
+  }
+}
