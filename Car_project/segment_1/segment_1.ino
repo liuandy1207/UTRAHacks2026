@@ -388,6 +388,12 @@ void loop() {
    delay(1000);
    forward();
    delay(2500);
+   brake();
+   delay(1000);
+   rotate(30);
+   delay(500);
+   rotate(60);
+   delay(500);
    rotate(90);
    delay(500);
 
