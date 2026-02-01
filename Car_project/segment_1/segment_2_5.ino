@@ -301,6 +301,66 @@ void moveAndCheckColor2(int tColour, char dir, int bg) {
 // =================================
 
 void loop() {
+  moveAndCheckColor(4, '1', 0);
+  forward();
+  delay(250);
+  turnRight();
+  delay(100);
+  moveAndCheckColor(2, 'l', 0);
 
+  // pick up cube
+   backward();
+   delay(2000);
+   turnRight();
+   delay(1000);
+   forward();
+   delay(2500);
+   brake();
+   delay(1000);
+   rotate(30);
+   delay(500);
+   rotate(60);
+   delay(500);
+   rotate(90);
+   delay(500);
+
+   turnLeft();
+   delay(2000);
+
+  int delaycount = 0;
+  int c1 = identifyColor2();
+  while (c1 != 1) {
+      Serial.println(c1);
+      forward();
+      delay(50);
+      delaycount += 50;
+      c1 = identifyColor2();
+   }
+
+  // drop box
+  forward();
+  delay(250);
+  rotate(60);
+  delay(500);
+  rotate(30);
+  delay(500);
+  rotate(0);
+  delay(500);
+  backward();
+  delay(400);
+  turnRight();
+  delay(1700);
+  forward(1200); //
+
+  moveAndCheckColor(4, 'l', 1);
+  
+  int c2 = identifyColor();
+  while (c2 != 4) {
+    forward(50);
+    delay(50);
+    c1 = identifyColor();
+  }
+  brake();
+  delay(10000);
 }
 
