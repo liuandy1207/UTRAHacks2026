@@ -319,45 +319,31 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
     colour = identifyColor();
   }
 }
+
+
 void findBall(){
   turnLeft();
   int almost90 = 2500; 
   delay(almost90);
   int minDist = 1000;
   int totalTurn = 0;
+  int distFromMin = 0;
   while(totalTurn < almost90*2){
-    
+    turnRight();
+    delay(almost90/10);
+    totalTurn += almost90/10;
+    if (checkDistance() < minDist){
+      minDist = checkDistance();
+      distFromMin = 0;
+    } else {
+      distFromMin += almost90/10;
+    }
+  turnLeft();
+  delay(distFromMin);
   }
-  //lowly turn right
 }
-// =================================
-
-// =================================
 
 // Segment 1
 void loop() {
-
-// follow red line 
-   moveAndCheckColor(1, 'l', 0);
-   Serial.print("meow");
-
-// pick up cube
-   backward();
-   delay(2000);
-   turnRight();
-   delay(1000);
-   forward();
-   delay(2500);
-   rotate(90);
-   delay(500);
-
-   turnLeft();
-   delay(1000);
-
-   while (1 != identifyColor()) {
-      forward();
-      delay(200);
-   }
-   // reup here
 
 }
