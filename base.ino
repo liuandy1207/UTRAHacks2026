@@ -44,8 +44,10 @@ void setup() {
   digitalWrite(S1, LOW);  
 
   // Echo Sensor Setup
-  pinMode(TRIG_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+
+  servo.write(0);
 }
 
 void loop() {
@@ -127,7 +129,6 @@ int checkDistance() {
   float distance = duration * 0.034 / 2;
   return distance;
 }
-
 
 /* IR Functions
 void readIR(int pin) {
