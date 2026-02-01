@@ -44,13 +44,10 @@ void setup() {
   digitalWrite(S1, LOW);  
 
   // Echo Sensor Setup
-  pinMode(TRIG_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
-}
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
 
-void loop() {
-  identifyColor();
-  delay(250);
+  servo.write(0);
 }
 
 // Servo Functions
@@ -127,7 +124,6 @@ int checkDistance() {
   float distance = duration * 0.034 / 2;
   return distance;
 }
-
 
 /* IR Functions
 void readIR(int pin) {
@@ -216,4 +212,6 @@ void moveAndCheckColor(int tColour, char dir) {
     }
     //todo:ditnce 
   }
+void loop() {
+  
 }

@@ -38,45 +38,53 @@ int checkDistance() {
 void obstacle_avoidance_sequence() {
 
   // 1. Follow red until obstacle (< 10 cm)
-  while (checkDistance() >= 10) {
-    followRed();
-  }
-  brake();
+  if (checkDistance() < 10) {
 
-  // 2. Turn right for 10 seconds
-  turnRight();
-  delay(10000);
-  brake();
 
-  // 3. Check distance again
-  if (checkDistance() >= 10) {
-
-    // No obstacle
-    forward();
-    delay(10000);
-    brake();
-
-  } else {
-
-    // Obstacle still present
+    // 2. Turn right for 10 seconds
     turnRight();
     delay(10000);
     brake();
 
-    forward();
+    // 3. Check distance again
+    if (checkDistance() >= 10) {
+
+      // No obstacle
+      forward();
+      delay(10000);
+      brake();
+
+    } else {
+
+      // Obstacle still present
+      turnRight();
+      delay(10000);
+      brake();
+
+      forward();
+      delay(10000);
+      brake();
+    }
+
+    // 4. Turn left for 10 seconds to parallel with red line
+    turnLeft();
+    delay(10000);
+    brake();
+    // 5. turn left for 10 seconds to face red line
+    turnLeft();
+    delay(10000); 
+    brake();
+    
+    // 5. Move forward until object is at red, stopping to poll every 0.25s
+    while (identifyColor() != 1) {
+      forward();
+      delay(250);
+    }
+    brake();
+
+    // 6. Turn left for 10 seconds
+    turnLeft();
     delay(10000);
     brake();
   }
-
-  // 5. Move forward until object is at red, stopping to poll every 0.25s
-  while (identifyColor() != 1) {
-    forward();
-    delay(250);
-  }
-  brake();
-
-  // 6. Turn left for 10 seconds
-  turnLeft();
-  delay(10000);
-  brake();
 }

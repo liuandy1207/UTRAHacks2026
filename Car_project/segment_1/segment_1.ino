@@ -6,21 +6,20 @@
 
 // Follow Black Line
 
-// Look for blue color to stop
+// look for red line 
 
-// Pick up cube (right side)
+// turn 90 deg 
 
-// return to line 
+// poll slowly left for red line 
 
-// Follow black 
+// when red start moveAndCheckColour(red)
+   // should stop at blue
 
-// Identify split
+// turn 90 deg right
 
-// Identify Red 
+// pick up cube 
 
-// Take right red 
+// turn 90 deg left
 
-// Look for blue to stop
-
-// drop cube (left side)
+// forward 
 

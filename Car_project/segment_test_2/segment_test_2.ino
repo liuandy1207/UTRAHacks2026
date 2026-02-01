@@ -11,9 +11,8 @@ Servo servo;
 #define IN3 4
 #define IN4 5
 
-// Echo Sensor
-#define TRIG 8
-#define ECHO 6
+// IR Sensors
+#define IR1 8
 
 // Color Sensor
 #define S0 13
@@ -31,6 +30,9 @@ void setup() {
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
 
+  // IR Setup
+  pinMode(IR1, INPUT);
+
   // Servo Setup
   servo.attach(servoPin);
 
@@ -42,32 +44,28 @@ void setup() {
   pinMode(OUT, INPUT);
   digitalWrite(S0, HIGH); // set frequency scaling
   digitalWrite(S1, LOW);  
-
-  // Echo Sensor Setup
-  pinMode(TRIG, OUTPUT);
-  pinMode(ECHO, INPUT);
-
-  servo.write(0);
 }
 
 void loop() {
-  identifyColor();
-  delay(250);
+
 }
 
 // Servo Functions
 void rotate(int deg) {
   servo.write(deg);
   // 0 puts the claw low, back leg high
-  // 90 puts the claw high, back leg low
+  // 90 putss the claw high, back leg low
 }
 
 // Color Sensor Functions
 
 // Calibration Values
-int redMin = 11,  redMax = 28;
-int greenMin = 11, greenMax = 32;
-int blueMin = 11, blueMax = 30;
+int redMin = 20; 
+int redMax = 60; 
+int greenMin = 20; 
+int greenMax = 60; 
+int blueMin = 20; 
+int blueMax = 60; 
 
 int identifyColor() {
   int r = getAverage(LOW, LOW);
@@ -85,19 +83,14 @@ int identifyColor() {
   Serial.print(" - Color: ");
   if (r < 50 && g < 50 && b < 50) {
     Serial.println("BLACK");
-    return 4;
   } else if (r > 200 && g > 200 && b > 200) {
     Serial.println("WHITE");
-    return 0;
   } else if (r > g && r > b) {
-    Serial.println("RED/BROWN");
-    return 1;
+    Serial.println("RED");
   } else if (g > r && g > b) {
     Serial.println("GREEN");
-    return 2;
   } else if (b > r && b > g) {
     Serial.println("BLUE");
-    return 3;
   } else {
     Serial.println("UNCERTAIN");
   }
@@ -116,21 +109,8 @@ int getAverage(int s2State, int s3State) {
   return sum / readings;
 }
 
-// Echo Sensor Code
-int checkDistance() {
-  // clear it
-  digitalWrite(TRIG, LOW);
-  delayMicroseconds(2);
-  // get the reading
-  digitalWrite(TRIG, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG, LOW);
-  long duration = pulseIn(ECHO, HIGH);
-  float distance = duration * 0.034 / 2;
-  return distance;
-}
 
-/* IR Functions
+// IR Functions
 void readIR(int pin) {
   int sum = 0;
   int readings = 10;
@@ -141,8 +121,7 @@ void readIR(int pin) {
   int state = (sum > readings/2) ? HIGH : LOW;
   Serial.println(state ? "Object Detected!" : "Naw...");
   delay(100);
-} 
-*/
+}
 
 // Motor Functions
 void backward() {
@@ -180,8 +159,13 @@ void turnLeft() {
   digitalWrite(IN4, LOW);
 }
 
-
 void loop() {
 
+  delay(2000);
+
+  forward();
+  delay(250);
+
+  
 
 }
