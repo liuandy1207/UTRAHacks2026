@@ -322,11 +322,13 @@ void loop() {
    turnLeft();
    delay(2000);
 
+  int delaycount = 0;
   int c1 = identifyColor2();
   while (c1 != 1) {
       Serial.println(c1);
       forward();
       delay(50);
+      delaycount += 50;
       c1 = identifyColor2();
    }
 
@@ -339,9 +341,10 @@ void loop() {
   delay(500);
   rotate(0);
   delay(500);
+  backward();
+  delay(400);
   turnRight();
-  delay(2400);
-
+  delay(1700);
   forward(1200); //
 
   moveAndCheckColor(4, 'l', 1);
