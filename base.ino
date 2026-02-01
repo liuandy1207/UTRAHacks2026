@@ -99,6 +99,47 @@ int identifyColor() {
   return 0;
 }
 
+// Calibration Values 2
+int redMin2 = 17,  redMax2 = 31;
+int greenMin2 = 20, greenMax2 = 35;
+int blueMin2 = 18, blueMax2 = 33;
+
+// Use for elevated!!!
+int identifyColor2() {
+  int r = getAverage(LOW, LOW);
+  int g = getAverage(HIGH, HIGH);
+  int b = getAverage(LOW, HIGH);
+
+  r = constrain(map(r, redMin2, redMax2, 255, 0), 0, 255);
+  g = constrain(map(g, greenMin2, greenMax2, 255, 0), 0, 255);
+  b = constrain(map(b, blueMin2, blueMax2, 255, 0), 0, 255);
+  
+  Serial.print("R: "); Serial.print(r);
+  Serial.print(" G: "); Serial.print(g);
+  Serial.print(" B: "); Serial.print(b);
+
+  Serial.print(" - Color: ");
+  if (r < 50 && g < 50 && b < 50) {
+    Serial.println("BLACK");
+    return 4;
+  } else if (r > 180 && g > 180 && b > 180) {
+    Serial.println("WHITE");
+    return 0;
+  } else if (r > g && r > b) {
+    Serial.println("RED/BROWN");
+    return 1;
+  } else if (g > r && g > b) {
+    Serial.println("GREEN");
+    return 2;
+  } else if (b > r && b > g) {
+    Serial.println("BLUE");
+    return 3;
+  } else {
+    Serial.println("UNCERTAIN");
+  }
+  return 0;
+}
+
 int getAverage(int s2State, int s3State) {
   int sum = 0;
   int readings = 50;
