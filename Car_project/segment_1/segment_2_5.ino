@@ -301,6 +301,11 @@ void moveAndCheckColor2(int tColour, char dir, int bg) {
 // =================================
 
 void loop() {
+  moveAndCheckColor(4, '1', 0);
+  forward();
+  delay(250);
+  turnRight();
+  delay(100);
   moveAndCheckColor(2, 'l', 0);
 
   // pick up cube
