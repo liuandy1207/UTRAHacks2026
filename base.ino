@@ -23,14 +23,14 @@ Servo servo;
 #define OUT 9
 
 // Calibration Values
-int redMin = 15,  redMax = 30;
-int greenMin = 18, greenMax = 31;
-int blueMin = 17, blueMax = 31;
+int redMin = 15,  redMax = 24;
+int greenMin = 15, greenMax = 40;
+int blueMin = 9, blueMax = 27;
 
 // Calibration Values 2
-int redMin2 = 17,  redMax2 = 28;
-int greenMin2 = 22, greenMax2 = 34;
-int blueMin2 = 21, blueMax2 = 27;
+int redMin2 = 9,  redMax2 = 24;
+int greenMin2 = 16, greenMax2 = 30;
+int blueMin2 = 15, blueMax2 = 30;
 
 void setup() {
   Serial.begin(115200);
@@ -56,8 +56,6 @@ void setup() {
   // Echo Sensor Setup
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
-
-  servo.write(0);
 }
 
 // Servo Functions
@@ -215,50 +213,11 @@ void turnRight() {
   digitalWrite(IN4, LOW);
 }
 
-//new function
-void obstacle_avoidance_sequence() {
-
-    // 2. Turn right for 10 seconds
-    turnLeft();
-    delay(1900);
-    brake();
-  
-    forward();
-    delay(3500);
-    brake();
-
-    turnRight();
-    delay(2000);
-    brake();
-
-    forward();
-    delay(3500);
-    brake();
-  
-    turnRight();
-    delay(1900);
-    brake();
-
-    forward();
-    delay(3500);
-    brake();
-    
-    int ARHHAH = identifyColor2();
-    while (ARHHAH != 1) {
-    Serial.println(ARHHAH);
-    forward();
-    delay(50);
-    ARHHAH = identifyColor2();
-   }
-   // reup here
-   brake();
-  }
-
 //new function end
 void moveAndCheckColor(int tColour, char dir, int bg) {
   bool begin = true;
   int almost90 = 2000; // TODO: fix
-  int step = int(almost90/10);
+  int step = int(almost90/6);
   int colour = identifyColor();
   while(colour != 3 || colour != bg){ //3= brown
     Serial.println("checked");
@@ -297,32 +256,10 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
   }
 }
 
-void findBall(){
-  turnLeft();
-  int almost90 = 2500; 
-  delay(almost90);
-  int minDist = 1000;
-  int totalTurn = 0;
-  int distFromMin = 0;
-  while(totalTurn < almost90*2){
-    turnRight();
-    delay(almost90/10);
-    totalTurn += almost90/10;
-    if (checkDistance() < minDist){
-      minDist = checkDistance();
-      distFromMin = 0;
-    } else {
-      distFromMin += almost90/10;
-    }
-  turnLeft();
-  delay(distFromMin);
-  }
-}
-
 void moveAndCheckColor2(int tColour, char dir, int bg) {
   bool begin = true;
   int almost90 = 2000; // TODO: fix
-  int step = int(almost90/10);
+  int step = int(almost90/6);
   int colour = identifyColor2();
   while(colour != 3 || colour != bg){ //3= brown
     Serial.println("checked");
@@ -363,7 +300,7 @@ void moveAndCheckColor2(int tColour, char dir, int bg) {
 
 // =================================
 
-// Segment 1
 void loop() {
 
 }
+
