@@ -50,11 +50,6 @@ void setup() {
   servo.write(0);
 }
 
-void loop() {
-  identifyColor();
-  delay(250);
-}
-
 // Servo Functions
 void rotate(int deg) {
   servo.write(deg);
@@ -179,3 +174,9 @@ void turnLeft() {
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
 }
+// **************
+void loop() {
+  // write code here pleasse
+}
+
+
