@@ -218,36 +218,23 @@ void turnRight() {
 //new function
 void obstacle_avoidance_sequence() {
 
-  // 1. Follow red until obstacle (< 10 cm)
-  if (checkDistance() < 10) {
-
-
     // 2. Turn right for 10 seconds
     turnLeft();
     delay(1900);
     brake();
+  
+    forward();
+    delay(3500);
+    brake();
 
-    // 3. Check distance again
-    if (checkDistance() >= 10) {
+    turnRight();
+    delay(2000);
+    brake();
 
-      // No obstacle
-      forward();
-      delay(3500);
-      brake();
-
-    } else {
-
-      // Obstacle still present
-      turnLeft();
-      delay(2000);
-      brake();
-
-      forward();
-      delay(3500);
-      brake();
-    }
-
-    // 4. Turn left for 10 seconds to parallel with red line
+    forward();
+    delay(3500);
+    brake();
+  
     turnRight();
     delay(1900);
     brake();
@@ -255,25 +242,17 @@ void obstacle_avoidance_sequence() {
     forward();
     delay(3500);
     brake();
-
-    // 5. turn left for 10 seconds to face red line
-    turnRight();
-    delay(1900); 
-    brake();
     
-    // 5. Move forward until object is at red, stopping to poll every 0.25s
-    while (identifyColor() != 1) {
-      forward();
-      delay(250);
-    }
-    brake();
-
-    // 6. Turn left for 10 seconds
-    turnLeft();
-    delay(1000);
-    brake();
+    int ARHHAH = identifyColor2();
+    while (ARHHAH != 1) {
+    Serial.println(ARHHAH);
+    forward();
+    delay(50);
+    ARHHAH = identifyColor2();
+   }
+   // reup here
+   brake();
   }
-}
 
 //new function end
 void moveAndCheckColor(int tColour, char dir, int bg) {
@@ -317,18 +296,28 @@ void moveAndCheckColor(int tColour, char dir, int bg) {
     colour = identifyColor();
   }
 }
+
 void findBall(){
   turnLeft();
   int almost90 = 2500; 
   delay(almost90);
   int minDist = 1000;
   int totalTurn = 0;
+  int distFromMin = 0;
   while(totalTurn < almost90*2){
-    
+    turnRight();
+    delay(almost90/10);
+    totalTurn += almost90/10;
+    if (checkDistance() < minDist){
+      minDist = checkDistance();
+      distFromMin = 0;
+    } else {
+      distFromMin += almost90/10;
+    }
+  turnLeft();
+  delay(distFromMin);
   }
-  //lowly turn right
 }
-
 
 void moveAndCheckColor2(int tColour, char dir, int bg) {
   bool begin = true;
